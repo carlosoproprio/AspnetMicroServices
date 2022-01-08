@@ -12,7 +12,7 @@ namespace Catalog.API.Data
             var database = client.GetDatabase(configuration.GetValue<string>("MongoDatabaseSettings:DatabaseName"));
 
             Products = database.GetCollection<Product>(configuration.GetValue<string>("MongoDatabaseSettings:CollectionName"));
-            CatalogContextSeed
+            //CatalogContextSeed
         }
 
         public IMongoCollection<Product> Products { get; }
