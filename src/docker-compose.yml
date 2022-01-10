@@ -7,6 +7,12 @@ services:
   basketdb:
     image: redis:alpine
 
+  discountdb:
+    image: mariadb
+
+  adminer:
+    image: adminer
+
   portainer:
     image: portainer/portainer-ce
 
@@ -25,3 +31,5 @@ services:
 volumes:
   mongo_data:
   portainer_data:
+  mysql_data:
+  adminer:
