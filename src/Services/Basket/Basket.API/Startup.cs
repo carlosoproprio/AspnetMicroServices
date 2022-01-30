@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Basket.API.GRPCServices;
+using Discount.GRPC;
 
 namespace Basket.API
 {
@@ -30,12 +32,17 @@ namespace Basket.API
             {
                 options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
             });
+
+            services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
+                o => o.Address = new Uri(Configuration["GRPCSettings:DiscountUrl"]));
+
+            services.AddScoped<DiscountGRPCService>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Basket.API", Version = "v1" });
             });
-
             services.AddScoped<IBasketRepository, BasketRepository>();
         }
 
