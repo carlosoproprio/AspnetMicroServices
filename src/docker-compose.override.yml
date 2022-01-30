@@ -23,9 +23,7 @@ services:
       - "3306:3306"
     environment:
       - MARIADB_ROOT_PASSWORD=welcome
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=admin1234
-      - MYSQL_DB=DiscountDB
+      - MYSQL_DATABASE=DiscountDB
     volumes:
       - mysql_data:/var/lib/mysql/data/
 
@@ -65,4 +63,14 @@ services:
       - basketdb
     ports:
       - "8001:80"
+
+  discount.api:
+    container_name: discount.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionString=Server=discountdb;Database=DiscountDB;Port=3306;Uid=root;Pwd=welcome;"
+    depends_on:
+      - discountdb
+    ports:
+      - "8002:80"
 
