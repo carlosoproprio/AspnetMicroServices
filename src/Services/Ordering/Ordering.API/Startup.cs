@@ -27,7 +27,7 @@ namespace Ordering.API
             services.AddApplicationService();
             services.AddInfrastructureServices(Configuration);
 
-            services.AddControllers();
+            services.AddControllers(); 
 
             services.AddMassTransit(config =>
             {
