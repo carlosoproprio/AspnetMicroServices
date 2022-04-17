@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Basket.API.GRPCServices;
 using Discount.GRPC;
+using MassTransit;
 
 namespace Basket.API
 {
@@ -33,10 +34,22 @@ namespace Basket.API
                 options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
             });
 
+            //GRPC configuration
             services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
                 o => o.Address = new Uri(Configuration["GRPCSettings:DiscountUrl"]));
 
             services.AddScoped<DiscountGRPCService>();
+            services.AddAutoMapper(typeof(Startup));
+
+            // MassTransit-RabbitMQ Configuration
+            services.AddMassTransit(config =>
+            {
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host(Configuration["EventBusSettings:HostAddress"]);
+                });
+            });
+            //services.AddMassTransitHostedService();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
